@@ -46,6 +46,18 @@
                   <el-radio-button label="native">Java JNI</el-radio-button>
                 </el-radio-group>
               </div>
+
+              <div v-else-if="activeNav === 'web-flux'" class="endpoint-display">
+                <div class="path-label">
+                    Java Lib
+                </div>
+              </div>
+
+              <div v-else-if="activeNav === 'rpc-python'" class="endpoint-display">
+                <div class="path-label">
+                    gRPC
+                </div>
+              </div>
               
               <!-- 其他模式：只显示路径文本 -->
               <div v-else class="endpoint-display">
@@ -235,9 +247,15 @@ const currentPath = computed(() => {
 const switchNav = (item) => {
   activeNav.value = item.id;
   response.value = null;
+  // 销毁旧图表实例
   if (chartInstance) {
-    chartInstance.clear();
+    chartInstance.dispose();
+    chartInstance = null;
   }
+
+  nextTick(() => {
+    chartRef.value = null;
+  });
 };
 
 // 触发文件选择
@@ -553,6 +571,19 @@ onUnmounted(() => {
   color: #374151;
   display: block;
 }
+
+.path-label {
+  background-color: #409eff;   /* Element Plus 主色蓝 */
+  color: #ffffff;              /* 白色字体 */
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #409eff;
+  font-family: monospace;
+  width: fit-content;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 
 .endpoint-selector :deep(.el-radio-group) {
   width: 100%;
