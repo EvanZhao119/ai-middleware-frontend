@@ -5,7 +5,7 @@
       <div class="header-content">
         <div class="logo-section">
           <span class="logo-icon">▼</span>
-          <h1>Shannon Hub</h1>
+          <h1>Shannon Hub AI Engineering Lab</h1>
         </div>
         <p class="subtitle">AI Middleware Experiment Portal - Upload an image and test backend inference or moderation</p>
       </div>
@@ -42,8 +42,8 @@
               <!-- Web MVC 特殊处理：显示可切换的按钮 -->
               <div v-if="activeNav === 'web-mvc'" class="endpoint-selector">
                 <el-radio-group v-model="apiMode" size="default">
-                  <el-radio-button label="classify">/api/moderation/classify</el-radio-button>
-                  <el-radio-button label="native">/api/moderation/native</el-radio-button>
+                  <el-radio-button label="classify">Java Lib</el-radio-button>
+                  <el-radio-button label="native">Java JNI</el-radio-button>
                 </el-radio-group>
               </div>
               
@@ -187,7 +187,6 @@ import {
 import * as echarts from "echarts";
 import { useRequest } from "../composables/useRequest";
 
-// 【修改】使用原来的 useRequest hook
 const { loading, response, sendRequest } = useRequest();
 
 // 导航配置数组
@@ -306,7 +305,6 @@ const increaseTopK = () => {
   if (form.value.topK < 20) form.value.topK++;
 };
 
-// 【修改】发送请求 - 使用原来的方式
 const handleSendRequest = async () => {
   if (!uploadedFile.value) {
     ElMessage.error("Please upload an image first!");
