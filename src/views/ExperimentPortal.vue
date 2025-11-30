@@ -7,13 +7,14 @@
           <span class="logo-icon">▼</span>
           <h1>Shannon Hub AI Engineering Lab</h1>
         </div>
-        <p class="subtitle">AI Middleware Experiment Portal - Upload an image and test backend inference or moderation</p>
+        <p class="subtitle">
+          AI Middleware Experiment Portal - Upload an image and test backend inference or moderation
+        </p>
       </div>
     </header>
 
     <!-- 主内容区：三栏布局 -->
     <main class="portal-main">
-      
       <!-- 左侧导航栏 -->
       <aside class="navigation-sidebar">
         <h3 class="nav-title">Navigation</h3>
@@ -29,158 +30,187 @@
         </nav>
       </aside>
 
-      <!-- 中间请求配置区域 -->
-      <section class="request-panel">
-        <el-card shadow="hover" class="panel-card">
-          <h3 class="section-title">⚙️ Request Configuration</h3>
-          
-          <div class="config-section">
-            <!-- 【修复】所有模式都显示 Endpoint -->
-            <div class="config-item">
-              <label class="config-label">Endpoint:</label>
-              
-              <!-- Web MVC 特殊处理：显示可切换的按钮 -->
-              <div v-if="activeNav === 'web-mvc'" class="endpoint-selector">
-                <el-radio-group v-model="apiMode" size="default">
-                  <el-radio-button label="classify">Java Lib</el-radio-button>
-                  <el-radio-button label="native">Java JNI</el-radio-button>
-                </el-radio-group>
-              </div>
+      <!-- [NEW] 当选中 Agent S Demo 时，占用中间+右侧整块区域展示视频 -->
+      <template v-if="activeNav === 'agent-demo'">
+        <section class="demo-panel">
+          <el-card shadow="hover" class="demo-card">
+            <h3 class="section-title">🎬 Agent S Demo</h3>
+            <div class="agent-demo-wrapper">
+              <iframe
+                class="agent-demo-frame"
+                src="https://www.youtube.com/embed/kOCVm-rcOrg"
+                title="Agent S Demo"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </el-card>
+        </section>
+      </template>
 
-              <div v-else-if="activeNav === 'web-flux'" class="endpoint-display">
-                <div class="path-label">
+      <!-- [MODIFIED] 其它导航时，保持原来的 Request + Response 两栏布局 -->
+      <template v-else>
+        <!-- 中间请求配置区域 -->
+        <section class="request-panel">
+          <el-card shadow="hover" class="panel-card">
+            <h3 class="section-title">⚙️ Request Configuration</h3>
+
+            <div class="config-section">
+              <!-- Endpoint -->
+              <div class="config-item">
+                <label class="config-label">Endpoint:</label>
+
+                <!-- Web MVC 特殊处理：显示可切换的按钮 -->
+                <div v-if="activeNav === 'web-mvc'" class="endpoint-selector">
+                  <el-radio-group v-model="apiMode" size="default">
+                    <el-radio-button label="classify">Java Lib</el-radio-button>
+                    <el-radio-button label="native">Java JNI</el-radio-button>
+                  </el-radio-group>
+                </div>
+
+                <div v-else-if="activeNav === 'web-flux'" class="endpoint-display">
+                  <div class="path-label">
                     Java Lib
-                </div>
-              </div>
-
-              <div v-else-if="activeNav === 'rpc-python'" class="endpoint-display">
-                <div class="path-label">
-                    gRPC
-                </div>
-              </div>
-              
-              <!-- 其他模式：只显示路径文本 -->
-              <div v-else class="endpoint-display">
-                <el-input :value="currentPath" readonly />
-              </div>
-            </div>
-
-            <!-- Path 显示 -->
-            <div class="config-item">
-              <label class="config-label">Path:</label>
-              <el-input :value="currentPath" readonly />
-            </div>
-
-            <!-- 图片上传区域 -->
-            <div class="config-item">
-              <label class="config-label">Upload Image:</label>
-              
-              <!-- 未上传：显示上传区域 -->
-              <div v-if="!uploadedImage" class="upload-area-simple">
-                <input 
-                  type="file" 
-                  ref="fileInput"
-                  accept="image/*"
-                  @change="handleFileSelect"
-                  style="display: none;"
-                />
-                <div class="upload-box" @click="triggerFileInput" @drop.prevent="handleFileDrop" @dragover.prevent>
-                  <el-icon class="upload-icon"><UploadFilled /></el-icon>
-                  <div class="upload-text">Drop file here or click to upload</div>
-                  <div class="upload-hint">Support: JPG, PNG, GIF</div>
-                </div>
-              </div>
-              
-              <!-- 已上传：显示图片预览和删除按钮 -->
-              <div v-else class="image-preview-container">
-                <div class="image-preview">
-                  <img :src="uploadedImage" alt="Uploaded Image" />
-                  <div class="image-overlay">
-                    <el-button 
-                      type="danger" 
-                      :icon="Delete" 
-                      circle 
-                      size="large"
-                      @click="removeImage"
-                    />
                   </div>
                 </div>
-                <div class="image-info">
-                  <el-icon><Picture /></el-icon>
-                  <span>{{ uploadedFileName }}</span>
+
+                <div v-else-if="activeNav === 'rpc-python'" class="endpoint-display">
+                  <div class="path-label">
+                    gRPC
+                  </div>
+                </div>
+
+                <!-- 其他模式：只显示路径文本（预留扩展） -->
+                <div v-else class="endpoint-display">
+                  <el-input :value="currentPath" readonly />
                 </div>
               </div>
-            </div>
 
-            <!-- Top K 配置 -->
-            <div class="config-item">
-              <label class="config-label">Top K:</label>
-              <div class="topk-control">
-                <el-button 
-                  :icon="Minus" 
-                  @click="decreaseTopK"
-                  :disabled="form.topK <= 1"
-                />
-                <el-input-number 
-                  v-model="form.topK" 
-                  :min="1" 
-                  :max="20"
-                  controls-position="right"
-                />
-                <el-button 
-                  :icon="Plus" 
-                  @click="increaseTopK"
-                  :disabled="form.topK >= 20"
-                />
+              <!-- Path 显示 -->
+              <div class="config-item">
+                <label class="config-label">Path:</label>
+                <el-input :value="currentPath" readonly />
               </div>
-            </div>
 
-            <!-- 发送按钮 -->
-            <el-button 
-              type="primary" 
-              size="large"
-              :loading="loading"
-              @click="handleSendRequest"
-              class="send-button"
-              :disabled="!uploadedImage"
-            >
-              <el-icon v-if="!loading"><Position /></el-icon>
-              {{ loading ? 'Sending Request...' : 'Send Request' }}
-            </el-button>
-          </div>
-        </el-card>
-      </section>
+              <!-- 图片上传区域 -->
+              <div class="config-item">
+                <label class="config-label">Upload Image:</label>
 
-      <!-- 右侧响应区域 -->
-      <section class="response-panel">
-        <!-- Bar Chart 卡片 -->
-        <el-card shadow="hover" class="chart-card">
-          <h3 class="section-title">📊 Bar Chart</h3>
-          <div v-if="response" class="chart-content">
-            <div class="summary">
-              <div class="summary-item">
-                <span class="summary-label">Top Label:</span>
-                <el-tag type="success" size="large">{{ response.topLabel || response.label }}</el-tag>
+                <!-- 未上传：显示上传区域 -->
+                <div v-if="!uploadedImage" class="upload-area-simple">
+                  <input
+                    type="file"
+                    ref="fileInput"
+                    accept="image/*"
+                    @change="handleFileSelect"
+                    style="display: none;"
+                  />
+                  <div
+                    class="upload-box"
+                    @click="triggerFileInput"
+                    @drop.prevent="handleFileDrop"
+                    @dragover.prevent
+                  >
+                    <el-icon class="upload-icon"><UploadFilled /></el-icon>
+                    <div class="upload-text">Drop file here or click to upload</div>
+                    <div class="upload-hint">Support: JPG, PNG, GIF</div>
+                  </div>
+                </div>
+
+                <!-- 已上传：显示图片预览和删除按钮 -->
+                <div v-else class="image-preview-container">
+                  <div class="image-preview">
+                    <img :src="uploadedImage" alt="Uploaded Image" />
+                    <div class="image-overlay">
+                      <el-button
+                        type="danger"
+                        :icon="Delete"
+                        circle
+                        size="large"
+                        @click="removeImage"
+                      />
+                    </div>
+                  </div>
+                  <div class="image-info">
+                    <el-icon><Picture /></el-icon>
+                    <span>{{ uploadedFileName }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="summary-item">
-                <span class="summary-label">Confidence:</span>
-                <el-tag type="primary" size="large">{{ (response.topProb || response.score)?.toFixed?.(4) }}</el-tag>
-              </div>
-            </div>
-            <div ref="chartRef" class="chart"></div>
-          </div>
-          <el-empty v-else description="No response yet" :image-size="120" />
-        </el-card>
 
-        <!-- Raw Response 卡片 -->
-        <el-card shadow="hover" class="raw-card">
-          <h3 class="section-title">📄 Raw Response</h3>
-          <div v-if="response" class="json-content">
-            <pre class="json-display">{{ JSON.stringify(response, null, 2) }}</pre>
-          </div>
-          <el-empty v-else description="No response yet" :image-size="120" />
-        </el-card>
-      </section>
+              <!-- Top K 配置 -->
+              <div class="config-item">
+                <label class="config-label">Top K:</label>
+                <div class="topk-control">
+                  <el-button
+                    :icon="Minus"
+                    @click="decreaseTopK"
+                    :disabled="form.topK <= 1"
+                  />
+                  <el-input-number
+                    v-model="form.topK"
+                    :min="1"
+                    :max="20"
+                    controls-position="right"
+                  />
+                  <el-button
+                    :icon="Plus"
+                    @click="increaseTopK"
+                    :disabled="form.topK >= 20"
+                  />
+                </div>
+              </div>
+
+              <!-- 发送按钮 -->
+              <el-button
+                type="primary"
+                size="large"
+                :loading="loading"
+                @click="handleSendRequest"
+                class="send-button"
+                :disabled="!uploadedImage"
+              >
+                <el-icon v-if="!loading"><Position /></el-icon>
+                {{ loading ? 'Sending Request...' : 'Send Request' }}
+              </el-button>
+            </div>
+          </el-card>
+        </section>
+
+        <!-- 右侧响应区域 -->
+        <section class="response-panel">
+          <!-- Bar Chart 卡片 -->
+          <el-card shadow="hover" class="chart-card">
+            <h3 class="section-title">📊 Bar Chart</h3>
+            <div v-if="response" class="chart-content">
+              <div class="summary">
+                <div class="summary-item">
+                  <span class="summary-label">Top Label:</span>
+                  <el-tag type="success" size="large">{{ response.topLabel || response.label }}</el-tag>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Confidence:</span>
+                  <el-tag type="primary" size="large">
+                    {{ (response.topProb || response.score)?.toFixed?.(4) }}
+                  </el-tag>
+                </div>
+              </div>
+              <div ref="chartRef" class="chart"></div>
+            </div>
+            <el-empty v-else description="No response yet" :image-size="120" />
+          </el-card>
+
+          <!-- Raw Response 卡片 -->
+          <el-card shadow="hover" class="raw-card">
+            <h3 class="section-title">📄 Raw Response</h3>
+            <div v-if="response" class="json-content">
+              <pre class="json-display">{{ JSON.stringify(response, null, 2) }}</pre>
+            </div>
+            <el-empty v-else description="No response yet" :image-size="120" />
+          </el-card>
+        </section>
+      </template>
     </main>
   </div>
 </template>
@@ -188,14 +218,14 @@
 <script setup>
 import { ref, computed, nextTick, onUnmounted } from "vue";
 import { ElMessage } from "element-plus";
-import { 
-  UploadFilled, 
-  Delete, 
-  Picture, 
-  Minus, 
-  Plus, 
-  Position 
-} from '@element-plus/icons-vue';
+import {
+  UploadFilled,
+  Delete,
+  Picture,
+  Minus,
+  Plus,
+  Position,
+} from "@element-plus/icons-vue";
 import * as echarts from "echarts";
 import { useRequest } from "../composables/useRequest";
 
@@ -204,50 +234,59 @@ const { loading, response, sendRequest } = useRequest();
 // 导航配置数组
 const navItems = ref([
   {
-    id: 'web-mvc',
-    label: 'Web MVC',
-    impl: 'api',
-    defaultPath: '/api/moderation/classify'
+    id: "web-mvc",
+    label: "Web MVC",
+    impl: "api",
+    defaultPath: "/api/moderation/classify",
   },
   {
-    id: 'web-flux',
-    label: 'Web Flux',
-    impl: 'flux',
-    defaultPath: '/flux/moderation/classify'
+    id: "web-flux",
+    label: "Web Flux",
+    impl: "flux",
+    defaultPath: "/flux/moderation/classify",
   },
   {
-    id: 'rpc-python',
-    label: 'RPC Python',
-    impl: 'rpc',
-    defaultPath: '/rpc/inference/predict'
-  }
+    id: "rpc-python",
+    label: "RPC Python",
+    impl: "rpc",
+    defaultPath: "/rpc/inference/predict",
+  },
+  {
+    // [NEW] 新增左侧导航项：Agent S Demo
+    id: "agent-demo",
+    label: "Agent S Demo",
+    impl: null,
+    defaultPath: "",
+  },
 ]);
 
 // 状态管理
-const activeNav = ref('web-mvc');
+const activeNav = ref("web-mvc");
 const apiMode = ref("classify");
 const form = ref({ topK: 5 });
 const chartRef = ref(null);
 const fileInput = ref(null);
 const uploadedImage = ref(null);
 const uploadedFile = ref(null);
-const uploadedFileName = ref('');
+const uploadedFileName = ref("");
+
 let chartInstance = null;
 
 // 计算当前路径
 const currentPath = computed(() => {
-  const currentNav = navItems.value.find(item => item.id === activeNav.value);
-  if (activeNav.value === 'web-mvc') {
+  const currentNav = navItems.value.find((item) => item.id === activeNav.value);
+  if (activeNav.value === "web-mvc") {
     return `/api/moderation/${apiMode.value}`;
   }
-  return currentNav?.defaultPath || '';
+  return currentNav?.defaultPath || "";
 });
 
 // 切换导航
 const switchNav = (item) => {
   activeNav.value = item.id;
   response.value = null;
-  // 销毁旧图表实例
+
+  // 切换页面时，销毁旧图表实例
   if (chartInstance) {
     chartInstance.dispose();
     chartInstance = null;
@@ -281,15 +320,15 @@ const handleFileDrop = (event) => {
 
 // 处理文件
 const processFile = (file) => {
-  const isImage = file.type.startsWith('image/');
+  const isImage = file.type.startsWith("image/");
   if (!isImage) {
-    ElMessage.error('Please upload an image file!');
+    ElMessage.error("Please upload an image file!");
     return;
   }
 
   const isLt10M = file.size / 1024 / 1024 < 10;
   if (!isLt10M) {
-    ElMessage.error('Image size must be less than 10MB!');
+    ElMessage.error("Image size must be less than 10MB!");
     return;
   }
 
@@ -298,7 +337,7 @@ const processFile = (file) => {
     uploadedImage.value = e.target.result;
     uploadedFile.value = file;
     uploadedFileName.value = file.name;
-    ElMessage.success('Image uploaded successfully!');
+    ElMessage.success("Image uploaded successfully!");
   };
   reader.readAsDataURL(file);
 };
@@ -307,11 +346,11 @@ const processFile = (file) => {
 const removeImage = () => {
   uploadedImage.value = null;
   uploadedFile.value = null;
-  uploadedFileName.value = '';
+  uploadedFileName.value = "";
   if (fileInput.value) {
-    fileInput.value.value = '';
+    fileInput.value.value = "";
   }
-  ElMessage.success('Image removed');
+  ElMessage.success("Image removed");
 };
 
 // Top K 控制
@@ -329,7 +368,7 @@ const handleSendRequest = async () => {
     return;
   }
 
-  const currentNav = navItems.value.find(item => item.id === activeNav.value);
+  const currentNav = navItems.value.find((item) => item.id === activeNav.value);
   if (!currentNav) return;
 
   const data = new FormData();
@@ -349,51 +388,51 @@ const handleSendRequest = async () => {
 // 绘制 ECharts 柱状图
 const renderChart = (res) => {
   if (!res?.topK || !chartRef.value) return;
-  
+
   const data = Object.entries(res.topK).map(([k, v]) => ({ name: k, value: v }));
   data.sort((a, b) => a.value - b.value);
 
   if (!chartInstance) {
     chartInstance = echarts.init(chartRef.value);
   }
-  
+
   chartInstance.setOption({
     grid: { top: 20, bottom: 60, left: 160, right: 40 },
-    xAxis: { 
+    xAxis: {
       type: "value",
       axisLabel: {
-        formatter: '{value}'
-      }
+        formatter: "{value}",
+      },
     },
-    yAxis: { 
-      type: "category", 
+    yAxis: {
+      type: "category",
       data: data.map((d) => d.name),
       axisLabel: {
-        fontSize: 12
-      }
+        fontSize: 12,
+      },
     },
     series: [
       {
         type: "bar",
         data: data.map((d) => d.value),
-        itemStyle: { 
+        itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-            { offset: 0, color: '#667eea' },
-            { offset: 1, color: '#764ba2' }
-          ])
+            { offset: 0, color: "#667eea" },
+            { offset: 1, color: "#764ba2" },
+          ]),
         },
         label: {
           show: true,
-          position: 'right',
-          formatter: '{c}'
-        }
+          position: "right",
+          formatter: "{c}",
+        },
       },
     ],
-    tooltip: { 
+    tooltip: {
       trigger: "axis",
       axisPointer: {
-        type: 'shadow'
-      }
+        type: "shadow",
+      },
     },
   });
 };
@@ -552,6 +591,27 @@ onUnmounted(() => {
   gap: 8px;
 }
 
+/* Agent S Demo 全宽面板 */
+.demo-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.demo-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-card :deep(.el-card__body) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
 /* 配置项样式 */
 .config-section {
   display: flex;
@@ -573,8 +633,8 @@ onUnmounted(() => {
 }
 
 .path-label {
-  background-color: #409eff;   /* Element Plus 主色蓝 */
-  color: #ffffff;              /* 白色字体 */
+  background-color: #409eff;
+  color: #ffffff;
   font-weight: 600;
   padding: 8px 14px;
   border-radius: 6px;
@@ -583,7 +643,6 @@ onUnmounted(() => {
   width: fit-content;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-
 
 .endpoint-selector :deep(.el-radio-group) {
   width: 100%;
@@ -794,7 +853,7 @@ onUnmounted(() => {
   border-radius: 8px;
   padding: 20px;
   font-size: 13px;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
   overflow: auto;
   margin: 0;
   line-height: 1.6;
@@ -818,5 +877,28 @@ onUnmounted(() => {
 
 .json-display::-webkit-scrollbar-thumb:hover {
   background: #64748b;
+}
+
+/* [NEW] Agent S Demo 视频容器样式：占满中间+右侧可用空间 */
+.agent-demo-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  flex: 1;
+  padding-top: 56.25%; /* 16:9 比例 */
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.agent-demo-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 </style>
