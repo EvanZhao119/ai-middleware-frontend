@@ -50,8 +50,8 @@
                 <div class="status-value warning">1 Experimental</div>
               </div>
               <div class="status-item">
-                <div class="status-label">Backend</div>
-                <div class="status-value">Java / Python</div>
+                <div class="status-label">Products</div>
+                <div class="status-value">1 Active</div>
               </div>
             </div>
           </el-card>
@@ -74,7 +74,6 @@
             <div class="opspanel-body">
               <div class="feature-section">
                 <h3 class="section-header">Key Capabilities</h3>
-                
                 <div class="feature-list">
                   <div class="feature-item">
                     <div class="feature-icon-wrapper color-blue">
@@ -82,57 +81,43 @@
                     </div>
                     <div class="feature-content">
                       <div class="feature-title">Enterprise-Grade RBAC</div>
-                      <div class="feature-desc">
-                        Fine-grained permission control with flexible User-Role-Menu mappings to secure your resources.
-                      </div>
+                      <div class="feature-desc">Fine-grained permission control with flexible User-Role-Menu mappings.</div>
                     </div>
                   </div>
-
                   <div class="feature-item">
                     <div class="feature-icon-wrapper color-purple">
                       <el-icon><Menu /></el-icon>
                     </div>
                     <div class="feature-content">
                       <div class="feature-title">Dynamic Module Architecture</div>
-                      <div class="feature-desc">
-                        Scalable menu management system allowing runtime configuration of modules and routes.
-                      </div>
+                      <div class="feature-desc">Scalable menu management allowing runtime configuration of modules.</div>
                     </div>
                   </div>
-
                   <div class="feature-item">
                     <div class="feature-icon-wrapper color-orange">
                       <el-icon><Timer /></el-icon>
                     </div>
                     <div class="feature-content">
                       <div class="feature-title">Distributed Job Scheduling</div>
-                      <div class="feature-desc">
-                        Reliable task execution monitoring with real-time tracking of success, failure, and latency.
-                      </div>
+                      <div class="feature-desc">Reliable task execution monitoring with real-time tracking.</div>
                     </div>
                   </div>
-
                   <div class="feature-item">
                     <div class="feature-icon-wrapper color-green">
                       <el-icon><Monitor /></el-icon>
                     </div>
                     <div class="feature-content">
                       <div class="feature-title">Unified Observability</div>
-                      <div class="feature-desc">
-                        Centralized logging center for comprehensive operational diagnostics and audit trails.
-                      </div>
+                      <div class="feature-desc">Centralized logging center for diagnostics and audit trails.</div>
                     </div>
                   </div>
-
-                   <div class="feature-item">
+                  <div class="feature-item">
                     <div class="feature-icon-wrapper color-red">
                       <el-icon><Cpu /></el-icon>
                     </div>
                     <div class="feature-content">
                       <div class="feature-title">AI-Native Integration</div>
-                      <div class="feature-desc">
-                        Built-in middleware layer designed to bridge traditional Ops with modern AI model inference.
-                      </div>
+                      <div class="feature-desc">Built-in middleware layer bridging Ops with AI model inference.</div>
                     </div>
                   </div>
                 </div>
@@ -144,7 +129,6 @@
                     <h3>🚀 Live Experience</h3>
                     <p>Instant access to the admin console.</p>
                   </div>
-                  
                   <div class="credential-panel">
                     <div class="cred-row">
                       <span class="cred-label">Username</span>
@@ -155,7 +139,6 @@
                       <code class="cred-value">admin</code>
                     </div>
                   </div>
-
                   <div class="action-buttons">
                     <el-button type="primary" size="large" class="launch-btn" @click="openUrl(OPSPANEL_DEMO_URL)">
                       Launch Demo Portal
@@ -165,9 +148,95 @@
                       <span class="github-icon">GitHub</span>
                     </el-button>
                   </div>
-                  
                   <div class="link-footer">
                     <a :href="OPSPANEL_DEMO_URL" target="_blank" rel="noopener noreferrer">{{ OPSPANEL_DEMO_URL }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </section>
+      </template>
+
+      <template v-else-if="activeNav === 'maceats'">
+        <section class="demo-panel">
+          <el-card shadow="hover" class="demo-card opspanel-card">
+            <div class="opspanel-hero">
+              <div class="hero-badge badge-orange">CAMPUS LIFE</div>
+              <h1 class="hero-title">
+                MacEats <span class="gradient-text-food">Smart Dining</span>
+              </h1>
+              <p class="hero-subtitle">
+                An intelligent restaurant recommendation system for McMaster University students, powered by user preference analysis and feedback loops.
+              </p>
+            </div>
+
+            <div class="opspanel-body">
+              <div class="feature-section">
+                <h3 class="section-header">How it works</h3>
+                <div class="feature-list">
+                  <div class="feature-item">
+                    <div class="feature-icon-wrapper color-orange">
+                      <el-icon><KnifeFork /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">1. Define Your Cravings</div>
+                      <div class="feature-desc">
+                        Select multiple categories (e.g., Ramen, Burgers, Bubble Tea) based on what you want to eat right now.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon-wrapper color-red">
+                      <el-icon><MagicStick /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">2. AI Recommendation</div>
+                      <div class="feature-desc">
+                        The system filters the best rated restaurants around McMaster campus that match your specific combination of cravings.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon-wrapper color-purple">
+                      <el-icon><DataLine /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">3. Feedback & Training</div>
+                      <div class="feature-desc">
+                        After the recommendation, you confirm your final choice. We collect this data to refine the model's future accuracy.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="demo-cta-section">
+                <div class="cta-box cta-food-theme">
+                  <div class="cta-header">
+                    <h3>🍔 Hungry?</h3>
+                    <p>Find the perfect spot in seconds.</p>
+                  </div>
+                  
+                  <div class="app-preview-text">
+                    Supported Categories:
+                    <div class="tag-cloud">
+                      <span>🍜 Ramen</span>
+                      <span>🌮 Tacos</span>
+                      <span>☕ Café</span>
+                      <span>🍕 Pizza</span>
+                    </div>
+                  </div>
+
+                  <div class="action-buttons">
+                    <el-button type="warning" size="large" class="launch-btn food-btn" @click="openUrl(MACEATS_URL)">
+                      Find Food Now
+                      <el-icon class="el-icon--right"><Position /></el-icon>
+                    </el-button>
+                  </div>
+                  
+                  <div class="link-footer">
+                    <a :href="MACEATS_URL" target="_blank" rel="noopener noreferrer">{{ MACEATS_URL }}</a>
                   </div>
                 </div>
               </div>
@@ -337,12 +406,16 @@ import {
   Minus,
   Plus,
   Position,
-  // New icons for OpsPanel
+  // OpsPanel Icons
   UserFilled,
   Menu,
   Timer,
   Monitor,
-  Cpu
+  Cpu,
+  // MacEats Icons
+  KnifeFork,
+  MagicStick,
+  DataLine
 } from "@element-plus/icons-vue";
 import * as echarts from "echarts";
 import { useRequest } from "../composables/useRequest";
@@ -390,12 +463,15 @@ const navStructure = ref([
 
   { type: "header", label: "Architecture + Intelligence" },
   { type: "item", id: "opspanel", label: "OpsPanel", impl: null },
+
+  { type: "header", label: "Products" },
+  { type: "item", id: "maceats", label: "MacEats", impl: null },
 ]);
 
-// OpsPanel Links
+// URL Constants
 const OPSPANEL_DEMO_URL = "https://macstuforum.top/opspanel";
-// Replace with your actual OpsPanel GitHub repository URL
 const OPSPANEL_GITHUB_URL = "https://github.com/EvanZhao119/OpsPanel";
+const MACEATS_URL = "https://macstuforum.top/maceats/";
 
 // State
 const activeNav = ref("overview"); 
@@ -728,7 +804,7 @@ onUnmounted(() => {
 .json-display::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
 
 /* =========================================
-   OpsPanel Redesign Styles
+   OpsPanel & MacEats Styles
    ========================================= */
 
 /* Card Reset */
@@ -793,38 +869,14 @@ onUnmounted(() => {
 
 /* Feature Section (Left) */
 .feature-section { flex: 2; }
-
-.section-header {
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #94a3b8;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-
+.section-header { font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 700; margin-bottom: 24px; }
 .feature-list { display: flex; flex-direction: column; gap: 24px; }
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 12px;
-  border-radius: 12px;
-  transition: background 0.2s ease;
-}
-
+.feature-item { display: flex; align-items: flex-start; gap: 16px; padding: 12px; border-radius: 12px; transition: background 0.2s ease; }
 .feature-item:hover { background: #f8fafc; }
 
 .feature-icon-wrapper {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
+  flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
 }
 
 /* Icon Colors */
@@ -839,51 +891,28 @@ onUnmounted(() => {
 .feature-desc { font-size: 15px; color: #64748b; line-height: 1.5; }
 
 /* CTA Section (Right) */
-.demo-cta-section {
-  flex: 1;
-  max-width: 400px;
-  min-width: 320px;
-}
-
+.demo-cta-section { flex: 1; max-width: 400px; min-width: 320px; }
 .cta-box {
-  background: #1e293b; /* Dark theme */
-  color: white;
-  border-radius: 16px;
-  padding: 32px;
+  background: #1e293b; color: white; border-radius: 16px; padding: 32px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 20px;
+  position: sticky; top: 20px;
 }
 
 .cta-header h3 { font-size: 22px; margin: 0 0 8px 0; color: #ffffff; }
 .cta-header p { color: #94a3b8; margin: 0 0 24px 0; font-size: 14px; }
 
 .credential-panel {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 16px; margin-bottom: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .cred-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; }
 .cred-row:last-child { margin-bottom: 0; }
 .cred-label { color: #cbd5e1; }
-.cred-value {
-  font-family: 'JetBrains Mono', monospace;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 2px 8px;
-  border-radius: 4px;
-  color: #4ade80;
-  font-weight: 600;
-}
+.cred-value { font-family: monospace; background: rgba(0, 0, 0, 0.3); padding: 2px 8px; border-radius: 4px; color: #4ade80; font-weight: 600; }
 
 .action-buttons { display: flex; flex-direction: column; gap: 12px; }
-
 .launch-btn { width: 100%; font-weight: 700; height: 48px; font-size: 16px; background: #3b82f6; border: none; }
 .launch-btn:hover { background: #2563eb; }
-
-.github-btn { width: 100%; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); height: 48px; font-size: 16px; margin-left: 0 !important;}
+.github-btn { width: 100%; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); height: 48px; font-size: 16px; margin-left: 0 !important; }
 .github-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; border-color: white; }
 
 .link-footer { margin-top: 20px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -894,4 +923,31 @@ onUnmounted(() => {
   .opspanel-body { flex-direction: column; gap: 40px; }
   .demo-cta-section { max-width: 100%; }
 }
+
+/* =========================================
+   MacEats Theme Styles
+   ========================================= */
+
+/* Warm Food Gradient Text */
+.gradient-text-food {
+  background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Orange Badge */
+.badge-orange { background: #fff7ed; color: #c2410c; }
+
+/* Food CTA Theme Override */
+.cta-food-theme { background: linear-gradient(145deg, #1e1e1e, #2d2a26); border: 1px solid #431407; }
+.cta-food-theme .cta-header h3 { color: #fb923c; }
+
+/* Tag Cloud */
+.app-preview-text { color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.tag-cloud span { background: rgba(255, 255, 255, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #fdba74; }
+
+/* Food Button Override */
+.food-btn { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border: none; }
+.food-btn:hover { background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); }
 </style>
