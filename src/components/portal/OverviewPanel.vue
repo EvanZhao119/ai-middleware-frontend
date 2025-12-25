@@ -26,7 +26,7 @@
             <div class="desc-row">
               <el-icon class="desc-icon purple-icon"><Medal /></el-icon>
               <p class="hero-desc dark-text">
-                Trusted by 10+ companies across engineering, operations, and product teams.
+                Trusted by 10+ companies and startups across engineering, operations, and product teams.
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@
     <section class="section-container">
       <div class="section-header">
         <div class="header-line"></div>
-        <h2>Who We Work With & Impact</h2>
+        <h2>Who We Work With</h2>
       </div>
       
       <div class="grid-1x3">
