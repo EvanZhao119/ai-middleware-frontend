@@ -80,9 +80,12 @@ const handleSelect = (id) => {
 .portal-main {
   flex: 1;
   display: flex;
-  gap: 16px; /* Sidebar 和 内容 之间的间距 */
+  gap: 16px;
   padding: 16px;
-  overflow: hidden;
+  /* CHANGED: Allow vertical scrolling for the main content area */
+  overflow-y: auto; 
+  /* Optional: Smooth scrolling */
+  scroll-behavior: smooth;
   width: 100%;
   box-sizing: border-box;
 }
