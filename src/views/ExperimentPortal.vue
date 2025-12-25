@@ -26,7 +26,9 @@
               @click="switchNav(item)"
             >
               <span class="nav-icon" v-if="item.id === 'overview'">🏠</span>
+              
               <span class="nav-indent" v-else>├─</span>
+              
               {{ item.label }}
             </button>
           </template>
@@ -56,15 +58,15 @@
               </div>
 
               <div class="status-item">
-                <div class="status-label">Architecture</div>
-                <div class="status-value purple">1 Platform</div>
-                <div class="status-desc">Ops & Intelligence</div>
-              </div>
-
-              <div class="status-item">
                 <div class="status-label">Products</div>
                 <div class="status-value food">1 Active</div>
                 <div class="status-desc">Smart Applications</div>
+              </div>
+
+              <div class="status-item">
+                <div class="status-label">Data Analysis</div>
+                <div class="status-value teal">1 Dashboard</div>
+                <div class="status-desc">Real-time Intelligence</div>
               </div>
             </div>
           </el-card>
@@ -230,7 +232,6 @@
                     <h3>🍔 Hungry?</h3>
                     <p>Find the perfect spot in seconds.</p>
                   </div>
-                  
                   <div class="app-preview-text">
                     Supported Categories:
                     <div class="tag-cloud">
@@ -240,14 +241,12 @@
                       <span>🍕 Pizza</span>
                     </div>
                   </div>
-
                   <div class="action-buttons">
                     <el-button type="warning" size="large" class="launch-btn food-btn" @click="openUrl(MACEATS_URL)">
                       Find Food Now
                       <el-icon class="el-icon--right"><Position /></el-icon>
                     </el-button>
                   </div>
-                  
                   <div class="link-footer">
                     <a :href="MACEATS_URL" target="_blank" rel="noopener noreferrer">{{ MACEATS_URL }}</a>
                   </div>
@@ -271,6 +270,98 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
+            </div>
+          </el-card>
+        </section>
+      </template>
+
+      <template v-else-if="activeNav === 'hsr-grafana'">
+        <section class="demo-panel">
+          <el-card shadow="hover" class="demo-card opspanel-card">
+            
+            <div class="hsr-hero-banner">
+              <div class="hero-badge badge-white-outline">
+                <el-icon><DataAnalysis /></el-icon> CITY ANALYTICS
+              </div>
+              <h1 class="hero-title white-text">
+                HSR OpsPanel Intelligent Transit
+              </h1>
+              <p class="hero-subtitle white-text-alpha">
+                A real-time transit data platform leveraging AI for delay prediction, route efficiency analysis, and network health monitoring.
+              </p>
+            </div>
+
+            <div class="opspanel-body">
+              <div class="feature-section">
+                <div class="hsr-feature-header">
+                   <el-icon class="bulb-icon"><Opportunity /></el-icon> 
+                   <h3>Key Capabilities</h3>
+                </div>
+                
+                <div class="feature-list hsr-list">
+                  <div class="feature-item hsr-item">
+                    <div class="feature-icon-wrapper bg-purple-light">
+                      <el-icon class="icon-purple"><Van /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">Real-Time Tracker</div>
+                      <div class="feature-desc">Live map visualization of all active HSR buses and routes.</div>
+                    </div>
+                  </div>
+                  <div class="feature-item hsr-item">
+                    <div class="feature-icon-wrapper bg-purple-light">
+                      <el-icon class="icon-purple"><Cpu /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">AI Delay Prediction</div>
+                      <div class="feature-desc">Machine learning models forecasting bus arrival times versus schedule.</div>
+                    </div>
+                  </div>
+                  <div class="feature-item hsr-item">
+                    <div class="feature-icon-wrapper bg-purple-light">
+                      <el-icon class="icon-purple"><TrendCharts /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">Route Efficiency</div>
+                      <div class="feature-desc">Analysis of fastest, slowest, and busiest routes.</div>
+                    </div>
+                  </div>
+                  <div class="feature-item hsr-item">
+                    <div class="feature-icon-wrapper bg-purple-light">
+                      <el-icon class="icon-purple"><Odometer /></el-icon>
+                    </div>
+                    <div class="feature-content">
+                      <div class="feature-title">Network Risk Level</div>
+                      <div class="feature-desc">Overall system health score and congestion alerts.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="demo-cta-section">
+                <div class="cta-box cta-hsr-theme">
+                  <div class="cta-header-purple">
+                    <h3>🚀 Live Experience</h3>
+                  </div>
+                  <div class="cta-body-white">
+                    <p class="cta-main-text">Instant access to live data visualization.</p>
+                    
+                    <div class="metrics-preview">
+                        <span class="metric-label">Data Availability:</span>
+                        <div class="metric-val">
+                          Real-time Fleet Count | Dynamic Risk Score
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <el-button type="primary" size="large" class="launch-btn purple-btn" @click="openUrl('https://evanzhao119.grafana.net/public-dashboards/31e3e2b9b16743529577e5db5cdb3db9')">
+                        Launch Live Dashboard
+                        <el-icon class="el-icon--right"><Link /></el-icon>
+                        </el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </el-card>
         </section>
@@ -419,16 +510,21 @@ import {
   Minus,
   Plus,
   Position,
-  // OpsPanel Icons
   UserFilled,
   Menu,
   Timer,
   Monitor,
   Cpu,
-  // MacEats Icons
   KnifeFork,
   MagicStick,
-  DataLine
+  DataLine,
+  // New Icons for HSR
+  Van,
+  TrendCharts,
+  Odometer,
+  Opportunity,
+  DataAnalysis,
+  Link
 } from "@element-plus/icons-vue";
 import * as echarts from "echarts";
 import { useRequest } from "../composables/useRequest";
@@ -442,34 +538,10 @@ const navStructure = ref([
   { type: "item", id: "overview", label: "Overview", impl: null },
   
   { type: "header", label: "AI Systems" },
-  { 
-    type: "item", 
-    id: "web-mvc", 
-    label: "Web MVC", 
-    impl: "api", 
-    path: "/api/moderation/classify" 
-  },
-  { 
-    type: "item", 
-    id: "jni", 
-    label: "JNI", 
-    impl: "api", 
-    path: "/api/moderation/native" 
-  },
-  { 
-    type: "item", 
-    id: "web-flux", 
-    label: "WebFlux", 
-    impl: "flux", 
-    path: "/flux/moderation/classify" 
-  },
-  { 
-    type: "item", 
-    id: "grpc", 
-    label: "gRPC", 
-    impl: "rpc", 
-    path: "/rpc/inference/predict" 
-  },
+  { type: "item", id: "web-mvc", label: "Web MVC", impl: "api", path: "/api/moderation/classify" },
+  { type: "item", id: "jni", label: "JNI", impl: "api", path: "/api/moderation/native" },
+  { type: "item", id: "web-flux", label: "WebFlux", impl: "flux", path: "/flux/moderation/classify" },
+  { type: "item", id: "grpc", label: "gRPC", impl: "rpc", path: "/rpc/inference/predict" },
 
   { type: "header", label: "AI Agents" },
   { type: "item", id: "agent-s", label: "Agent S", impl: null },
@@ -479,6 +551,15 @@ const navStructure = ref([
 
   { type: "header", label: "Products" },
   { type: "item", id: "maceats", label: "MacEats", impl: null },
+
+  // --- Data Analysis 区域 ---
+  { type: "header", label: "Data Analysis" },
+  { 
+    type: "item", 
+    id: "hsr-grafana", 
+    label: "HSR OpsPanel: Real-time Intelligence", 
+    impl: null 
+  }
 ]);
 
 // URL Constants
@@ -727,7 +808,7 @@ onUnmounted(() => {
   border-left: 3px solid #764ba2;
 }
 
-/* Overview Panel (UPDATED) */
+/* Overview Panel */
 .overview-panel { flex: 1; display: flex; flex-direction: column; }
 .overview-card { height: 100%; }
 .overview-card :deep(.el-card__body) {
@@ -769,6 +850,7 @@ onUnmounted(() => {
 .status-value.warning { color: #f59e0b; }
 .status-value.purple { color: #8b5cf6; }
 .status-value.food { color: #f97316; }
+.status-value.teal { color: #14b8a6; }
 
 @media (max-width: 1000px) {
   .system-status-grid { grid-template-columns: repeat(2, 1fr); }
@@ -982,4 +1064,95 @@ onUnmounted(() => {
 /* Food Button Override */
 .food-btn { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border: none; }
 .food-btn:hover { background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); }
+
+/* =========================================
+   NEW: HSR OpsPanel Styles
+   ========================================= */
+
+/* 1. Purple Hero Banner */
+.hsr-hero-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 60px;
+  margin: 32px 32px 0 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(118, 75, 162, 0.2);
+}
+
+.badge-white-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.white-text { color: #ffffff !important; margin: 0 0 12px 0; font-size: 32px; font-weight: 800; }
+.white-text-alpha { color: rgba(255, 255, 255, 0.9) !important; font-size: 16px; max-width: 700px; line-height: 1.6; font-weight: 400; margin: 0; }
+
+/* 2. Feature List Styling */
+.hsr-feature-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 24px; border-bottom: 2px solid #f3e8ff; padding-bottom: 12px;
+}
+.bulb-icon { font-size: 24px; color: #764ba2; }
+.hsr-feature-header h3 { margin: 0; font-size: 18px; color: #1f2937; font-weight: 700; }
+
+.bg-purple-light {
+  background: #f3e8ff !important;
+  color: #764ba2 !important;
+}
+.icon-purple { font-size: 24px; }
+.hsr-item { padding: 16px; border-bottom: 1px solid #f9fafb; }
+.hsr-item:last-child { border-bottom: none; }
+
+/* 3. Purple CTA Box Styling */
+.cta-hsr-theme {
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  padding: 0; /* Remove default padding to handle header separately */
+  overflow: hidden;
+  box-shadow: 0 10px 20px -5px rgba(118, 75, 162, 0.15);
+}
+
+.cta-header-purple {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  padding: 20px 24px;
+  display: flex; align-items: center;
+}
+.cta-header-purple h3 { margin: 0; color: white; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+
+.cta-body-white {
+  padding: 24px;
+}
+
+.cta-main-text {
+  font-size: 15px; color: #374151; font-weight: 600; margin-bottom: 20px;
+}
+
+.metrics-preview {
+  background: #faf5ff; border-radius: 8px; padding: 12px; margin-bottom: 24px; border: 1px solid #f3e8ff;
+}
+.metric-label { font-size: 12px; color: #6b7280; display: block; margin-bottom: 4px; }
+.metric-val { font-size: 14px; font-weight: 700; color: #4b5563; }
+
+
+.purple-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  border: none;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+.purple-btn:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
 </style>
