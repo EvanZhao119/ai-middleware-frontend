@@ -14,6 +14,7 @@
       <MacEatsPanel v-else-if="activeNav === 'maceats'" />
       <AgentSDemo v-else-if="activeNav === 'agent-s'" />
       <HSRGrafanaPanel v-else-if="activeNav === 'hsr-grafana'" />
+      <HRWorkforcePanel v-else-if="activeNav === 'hr-workforce'" />
       
       <InferencePanel 
         v-else 
@@ -36,6 +37,7 @@ import MacEatsPanel from "../components/portal/MacEatsPanel.vue";
 import AgentSDemo from "../components/portal/AgentSDemo.vue";
 import HSRGrafanaPanel from "../components/portal/HSRGrafanaPanel.vue";
 import InferencePanel from "../components/portal/InferencePanel.vue";
+import HRWorkforcePanel from "../components/portal/HRWorkforcePanel.vue"; 
 
 const activeNav = ref("overview");
 
@@ -53,7 +55,8 @@ const navStructure = ref([
   { type: "header", label: "Products" },
   { type: "item", id: "maceats", label: "MacEats", impl: null },
   { type: "header", label: "Data Analysis" },
-  { type: "item", id: "hsr-grafana", label: "HSR OpsPanel: Real-time Intelligence", impl: null }
+  { type: "item", id: "hsr-grafana", label: "HSR OpsPanel: Real-time Intelligence", impl: null },
+  { type: "item", id: "hr-workforce", label: "HR Workforce: AI Forecast", impl: null }
 ]);
 
 const currentNavItem = computed(() => {
