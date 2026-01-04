@@ -80,7 +80,7 @@
                   type="primary" 
                   size="large" 
                   class="launch-btn purple-btn" 
-                  @click="openUrl('https://evanzhao119.grafana.net/public-dashboards/759dc5b61c8544a38d7f45b9e6becfb5')"
+                  @click="openUrl('https://shannonchen.grafana.net/public-dashboards/62f2d2675169420397be8784b9c9e351')"
                 >
                   Workforce Intelligence
                   <el-icon class="el-icon--right"><TrendCharts /></el-icon>
@@ -99,7 +99,7 @@
                   type="default" 
                   size="large" 
                   class="launch-btn outline-purple-btn" 
-                  @click="openUrl('https://evanzhao119.grafana.net/public-dashboards/6bea9631ca634ae9a7e996c80190dac0')"
+                  @click="openUrl('https://shannonchen.grafana.net/public-dashboards/8fa0dad9848b43d9b129d4721e235a13')"
                 >
                   Ops & Data Quality
                   <el-icon class="el-icon--right"><Monitor /></el-icon>

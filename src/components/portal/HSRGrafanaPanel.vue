@@ -77,7 +77,7 @@
               </div>
 
               <div class="action-buttons">
-                  <el-button type="primary" size="large" class="launch-btn purple-btn" @click="openUrl('https://evanzhao119.grafana.net/public-dashboards/31e3e2b9b16743529577e5db5cdb3db9')">
+                  <el-button type="primary" size="large" class="launch-btn purple-btn" @click="openUrl('https://shannonchen.grafana.net/public-dashboards/1216b43762664578b76e24daf94124ce')">
                   Launch Live Dashboard
                   <el-icon class="el-icon--right"><Link /></el-icon>
                   </el-button>
