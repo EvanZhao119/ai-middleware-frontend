@@ -198,6 +198,7 @@ const handleSendRequest = async () => {
   data.append("file", uploadedFile.value);
   data.append("topK", form.value.topK);
   data.append("path", nav.path);
+  data.append("method", "POST");
 
   const res = await sendRequest("/v1/run", data);
   if (res) {

@@ -24,24 +24,34 @@
       
       <div v-if="showHistoryView" class="full-history-overlay">
         <div class="card-header">
-          <span>MINING HISTORY</span>
+          <span>DETAILED RESEARCH MINING HISTORY</span>
           <button class="close-btn" @click="showHistoryView = false">✕ Close</button>
         </div>
         <div class="overlay-scroll-content">
-          <div v-if="historyLoading" class="status-center">Fetching historical assets...</div>
-          <div v-else-if="historyList.length === 0" class="status-center">No records found in database.</div>
-          <div v-else class="history-list-grid">
-            <div v-for="item in historyList" :key="item.id" class="history-row" @click="loadHistoryDetail(item)">
-              <div class="row-main">
-                <span class="row-tag">{{ item.sensor_modality || 'General' }}</span>
-                <span class="row-title">{{ item.paper_title }}</span>
-              </div>
-              <div class="row-meta">
-                <span class="row-metric">{{ item.key_metrics }}</span>
-                <span class="row-date">{{ new Date(item.created_at).toLocaleDateString() }}</span>
-              </div>
-            </div>
-          </div>
+          <div v-if="historyLoading" class="status-center">Accessing Oracle Cloud History...</div>
+    
+          <table v-else class="history-table">
+            <thead>
+              <tr>
+                <th>TITLE</th>
+                <th>MODALITY</th>
+                <th>CONTEXT</th>
+                <th>METRICS</th>
+                <th>SUMMARY</th>
+                <th>DATE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in historyList" :key="item.ID" @click="loadHistoryDetail(item)" class="table-row-hover">
+                <td class="col-title" :title="item.PAPER_TITLE">{{ item.PAPER_TITLE }}</td>
+                <td><span class="tag-blue-small">{{ item.SENSOR_MODALITY }}</span></td>
+                <td><span class="tag-green-small">{{ item.ENVIRONMENT_CONTEXT || 'N/A' }}</span></td>
+                <td class="col-metrics">{{ item.KEY_METRICS }}</td>
+                <td class="col-summary">{{ item.EVIDENCE_SUMMARY }}</td>
+                <td class="col-date">{{ new Date(item.CREATED_AT).toLocaleDateString() }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -82,6 +92,13 @@
                 </div>
               </div>
 
+              <div class="evidence-section">
+                <span class="section-label">AI SYNTHESIS SUMMARY</span>
+                <div class="value summary-text">
+                {{ evidence.evidence_summary }}
+                </div>
+              </div>
+
               <div class="evidence-section quote-container">
                 <span class="section-label">SOURCE EVIDENCE (Validation Proof)</span>
                 <div class="quote-card">
@@ -112,12 +129,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { useRequest } from "../../composables/useRequest";
 
-const paperUrl = ref('https://arxiv.org/pdf/2301.12123.pdf');
-const loading = ref(false);
+const paperUrl = ref('https://objectstorage.ca-toronto-1.oraclecloud.com/n/yzcfifdyerai/b/siteuploads/o/Papers_A_Review_of_Sensor_Technologies_for_Perception.pdf');
 const evidence = ref(null);
 const errorMessage = ref("");
+
+const { loading, sendRequest } = useRequest();
 
 // UI Navigation States
 const showHistoryView = ref(false);
@@ -127,18 +145,28 @@ const historyLoading = ref(false);
 const analyzeDocument = async () => {
   if (!paperUrl.value) return;
   showHistoryView.value = false;
-  loading.value = true;
   evidence.value = null;
   errorMessage.value = "";
   try {
-    const res = await axios.get(`http://localhost:8081/flux/intelligence/analyze-by-url?url=${paperUrl.value}`);
-    evidence.value = {
-      paper_title: res.data.paperTitle,
-      sensor_modality: res.data.sensorSetup,
-      key_metrics: res.data.benchmarkResults,
-      evidence_summary: res.data.researchFindings,
-      source_quote: res.data.sourceQuote
-    };
+    const queryParams = new URLSearchParams({
+      impl: "flux",
+      path: "/flux/intelligence/analyze-by-url",
+      method: "GET",
+      url: paperUrl.value 
+    }).toString();
+
+    const data = await sendRequest(`/v1/run?${queryParams}`);
+
+    if (data) {
+      evidence.value = {
+        paper_title: data.paperTitle,     
+        sensor_modality: data.sensorModality,      
+        environment_context: data.environmentContext,  
+        key_metrics: data.keyMetrics,              
+        evidence_summary: data.evidenceSummary,    
+        source_quote: data.sourceQuote            
+      };
+    }
   } catch (err) {
     errorMessage.value = "ERR_FAILED";
   } finally { loading.value = false; }
@@ -148,14 +176,26 @@ const switchToHistory = async () => {
   showHistoryView.value = true;
   historyLoading.value = true;
   try {
-    const res = await axios.get('http://localhost:8081/flux/intelligence/history');
-    historyList.value = res.data;
+    const data = await sendRequest('/v1/run', {
+      impl: 'flux',
+      path: '/flux/intelligence/history'
+    }, { method: 'get' });
+    if (data) historyList.value = data;
   } catch (err) { console.error(err); }
   finally { historyLoading.value = false; }
 };
 
 const loadHistoryDetail = (record) => {
-  evidence.value = record;
+  paperUrl.value = record.PAPER_URL;
+
+  evidence.value = {
+    paper_title: record.PAPER_TITLE,
+    sensor_modality: record.SENSOR_MODALITY,
+    environment_context: record.ENVIRONMENT_CONTEXT, 
+    key_metrics: record.KEY_METRICS,
+    evidence_summary: record.EVIDENCE_SUMMARY,
+    source_quote: record.SOURCE_QUOTE
+  };
   showHistoryView.value = false;
 };
 </script>
@@ -234,6 +274,37 @@ const loadHistoryDetail = (record) => {
   line-height: 1;
 }
 .quote-mark.end { top: auto; left: auto; bottom: -10px; right: 20px; }
+
+/* AI 总结文本的样式，增加左侧边框增强“引用”感 */
+.summary-text {
+  color: #334155;
+  line-height: 1.6;
+  font-size: 14.5px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 5px solid #764ba2; /* 使用主题紫色 */
+  font-style: normal;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* 调整间距，让各 section 呼吸感更强 */
+.evidence-section {
+  margin-bottom: 24px;
+}
+
+/* 表格整体样式 */
+.history-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.history-table th { background: #f8fafc; padding: 12px 16px; text-align: left; font-size: 10px; font-weight: 900; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+.history-table td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
+.table-row-hover:hover { background: #f1f5f9; cursor: pointer; transition: background 0.2s; }
+
+/* 字段特定样式 */
+.col-title { font-weight: 700; color: #1e293b; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.col-metrics { font-family: 'JetBrains Mono', monospace; color: #764ba2; font-weight: 800; font-size: 12px; }
+.col-summary { color: #475569; font-size: 12px; max-width: 300px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tag-blue-small { background: #eff6ff; color: #2563eb; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; }
+.tag-green-small { background: #f0fdf4; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; }
 
 /* 报错与空状态 */
 .error-view { padding: 80px 40px; text-align: center; }

@@ -21,12 +21,21 @@ export function useRequest() {
     loading.value = true;
     error.value = null;
     try {
-      const res = await axios.post(url, data, {
+      const isFormData = data instanceof FormData;
+
+      const method = (options.method || 'post').toLowerCase();
+
+      const res = await axios({
+        url,
+        method,
+        // GET 请求将 data 作为 params，其他（POST）作为 data
+        params: method === 'get' ? data : null,
+        data: method !== 'get' ? data : null,
         headers: {
           Authorization: "Bearer test",
-          "Content-Type": data instanceof FormData
-            ? "multipart/form-data"
-            : "application/json",
+          // 【核心修复】：如果是 FormData，不设置 Content-Type 字段
+          // 这样 axios 和浏览器会自动补全带随机 boundary 的 Header
+          ...(isFormData ? {} : { "Content-Type": "application/json" }),
           ...options.headers,
         },
         ...options,
