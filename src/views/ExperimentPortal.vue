@@ -11,6 +11,7 @@
 
       <OverviewPanel v-if="activeNav === 'overview'" />
       <OpsPanel v-else-if="activeNav === 'opspanel'" />
+      <ResearchMinerPanel v-else-if="activeNav === 'research-miner'" />
       <MacEatsPanel v-else-if="activeNav === 'maceats'" />
       <AgentSDemo v-else-if="activeNav === 'agent-s'" />
       <HSRGrafanaPanel v-else-if="activeNav === 'hsr-grafana'" />
@@ -33,6 +34,7 @@ import PortalHeader from "../components/portal/PortalHeader.vue";
 import PortalSidebar from "../components/portal/PortalSidebar.vue";
 import OverviewPanel from "../components/portal/OverviewPanel.vue";
 import OpsPanel from "../components/portal/OpsPanel.vue";
+import ResearchMinerPanel from "../components/portal/ResearchMinerPanel.vue";
 import MacEatsPanel from "../components/portal/MacEatsPanel.vue";
 import AgentSDemo from "../components/portal/AgentSDemo.vue";
 import HSRGrafanaPanel from "../components/portal/HSRGrafanaPanel.vue";
@@ -52,6 +54,7 @@ const navStructure = ref([
   { type: "item", id: "agent-s", label: "Agent S", impl: null },
   { type: "header", label: "Architecture + Intelligence" },
   { type: "item", id: "opspanel", label: "OpsPanel", impl: null },
+  { type: "item", id: "research-miner", label: "Research AI: Miner", impl: null },
   { type: "header", label: "Products" },
   { type: "item", id: "maceats", label: "MacEats", impl: null },
   { type: "header", label: "Data Analysis" },
